@@ -32,11 +32,12 @@ class Eye {
     const innerCanthalDistance = width / 16;
     const centerOffset = side * (innerCanthalDistance / 2);
     const eyelidPeakX = side * (eyeWidth * 0.48 + centerOffset);
+    const outerCornerX = side * eyeWidth;
 
     // vertical positioning
     const eyeBaseline = 0; // centered
     // outer corner is higher than inner
-    const outerOffsetY = -eyeHeightMax * 0.05;
+		const outerCornerY = eyeBaseline - (eyeHeightMax * 0.05)
 
     // eye opening displacement, relative to baseline
     const upperEyelidMax = -eyeHeightMax * 0.59;
@@ -60,17 +61,30 @@ class Eye {
     const eyelidInnerAnchor = side * (abs(eyelidPeakX) - eyelidAnchorOffset);
     const eyelidOuterAnchor = side * (abs(eyelidPeakX) + eyelidAnchorOffset);
 
+    // define positions of points and their anchors
     this.inner = {
-      x: side * centerOffset,
+      x: centerOffset,
       y: eyeBaseline,
-      a1: { min: -(eyeHeightMax * 0.19), max: -(eyeHeightMax * 0.51) },
-      a2: { min: eyeHeightMax * 0.11, max: eyeHeightMax * 0.29 },
+      a1: { min: innerUpperMin, max: innerUpperMax },
+      a2: { min: innerLowerMin, max: innerLowerMax },
     };
     this.upper = {
-      x: side * eyelidPeakX,
-      y: { min: eyeHeightMax * 0.17, max: eyeHeightMax * 0.61 },
-      a1: side * (eyeWidth * 0.28),
-      a2: this.upper.a1,
+      x: eyelidPeakX,
+      y: { min: upperEyelidMin, max: upperEyelidMax },
+      a1: eyelidInnerAnchor,
+      a2: eyelidOuterAnchor,
+    };
+    this.lower = {
+      x: eyelidPeakX,
+      y: { min: lowerEyelidMin, max: lowerEyelidMax },
+      a1: eyelidInnerAnchor,
+      a2: eyelidOuterAnchor,
+    };
+    this.outer = {
+      x: outerCornerX,
+      y: outerOffsetY,
+      a1: { min: outerUpperMin, max: outerUpperMax },
+      a2: { min: outerLowerMin, max: outerLowerMin },
     };
     this.q1 = {
       //       ┌─────┐  ┌─────┐
