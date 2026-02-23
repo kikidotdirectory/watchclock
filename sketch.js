@@ -37,7 +37,7 @@ class Eye {
     // vertical positioning
     const eyeBaseline = 0; // centered
     // outer corner is higher than inner
-		const outerCornerY = eyeBaseline - (eyeHeightMax * 0.05)
+    const outerCornerY = eyeBaseline - eyeHeightMax * 0.05;
 
     // eye opening displacement, relative to baseline
     const upperEyelidMax = -eyeHeightMax * 0.59;
@@ -65,26 +65,50 @@ class Eye {
     this.inner = {
       x: centerOffset,
       y: eyeBaseline,
-      a1: { min: innerUpperMin, max: innerUpperMax },
-      a2: { min: innerLowerMin, max: innerLowerMax },
+      c1: {
+        x: centerOffset,
+        y: interpolateThing(innerUpperMin, innerUpperMax),
+      },
+      c2: {
+        x: centerOffset,
+        y: interpolateThing(innerLowerMin, innerLowerMax),
+      },
     };
     this.upper = {
       x: eyelidPeakX,
-      y: { min: upperEyelidMin, max: upperEyelidMax },
-      a1: eyelidInnerAnchor,
-      a2: eyelidOuterAnchor,
+      y: interpolateThing(upperEyelidMin, upperEyelidMax),
+      c1: {
+        x: eyelidInnerAnchor,
+        y: interpolateThing(upperEyelidMin, upperEyelidMax),
+      },
+      c2: {
+        x: eyelidOuterAnchor,
+        y: interpolateThing(upperEyelidMin, upperEyelidMax),
+      },
     };
     this.lower = {
       x: eyelidPeakX,
-      y: { min: lowerEyelidMin, max: lowerEyelidMax },
-      a1: eyelidInnerAnchor,
-      a2: eyelidOuterAnchor,
+      y: interpolateThing(lowerEyelidMin, lowerEyelidMax),
+      c1: {
+        x: eyelidInnerAnchor,
+        y: interpolateThing(lowerEyelidMin, lowerEyelidMax),
+      },
+      c2: {
+        x: eyelidOuterAnchor,
+        y: interpolateThing(lowerEyelidMin, lowerEyelidMax),
+      },
     };
     this.outer = {
       x: outerCornerX,
-      y: outerOffsetY,
-      a1: { min: outerUpperMin, max: outerUpperMax },
-      a2: { min: outerLowerMin, max: outerLowerMin },
+      y: outerCornerY,
+      c1: {
+        x: outerCornerX,
+        y: interpolateThing(outerUpperMin, outerUpperMax),
+      },
+      c2: {
+        x: outerCornerX,
+        y: interpolateThing(outerLowerMin, outerLowerMax),
+      },
     };
     this.q1 = {
       //       ┌─────┐  ┌─────┐
@@ -95,12 +119,15 @@ class Eye {
       //
 
       a1: { x: this.inner.x, y: this.inner.y },
-      a2: { x: side * eyelidPeak, y: -yOffset },
+      a2: { x: this.upper.x, y: this.upper.y },
       c1: {
-        x: this.inner.x,
-        y: interpolateThing(this.inner.a1.min, this.inner.a1.max),
+        x: this.inner.c1.x,
+        y: this.inner.c1.y,
       },
-      c2: { x: side * (eyelidPeak - eyeWidth * 0.3), y: -yOffset },
+      c2: {
+        x: this.upper.c1.x,
+        y: this.upper.c1.y,
+      },
     };
 
     this.q2 = {
@@ -111,10 +138,10 @@ class Eye {
       // ⠀⠀⠀⠈⠓⠦⠤⠖⠚⠁⠀     ⠀⠀⠙⠷⣦⣤⣶⠞⠉⠀⠀⠀
       //
 
-      a1: { x: side * eyelidPeak, y: -yOffset },
-      a2: { x: side * eyeWidth, y: eyeBaseline },
-      c1: { x: side * (eyelidPeak + eyeWidth * 0.2), y: -yOffset },
-      c2: { x: side * eyeWidth, y: eyeHeightMax * -0.25 },
+      a1: { x: this.upper.x, y: this.upper.y },
+      a2: { x: this.outer.x, y: this.outer.y },
+      c1: { x: this.upper.c2.x, y: this.upper.c2.y },
+      c2: { x: this.outer.c1.x, y: this.outer.c1.y },
     };
 
     this.q3 = {
@@ -125,10 +152,10 @@ class Eye {
       //│⠀⠀⠀⠈⠓⠦│⠖⠚⠁⠀     ⠀⠀⠙⠷⣦⣤│⠞⠉⠀⠀⠀ │
       //└──────┘               └──────┘
 
-      a1: { x: side * (centerOffset + eyeWidth), y: eyeBaseline },
-      a2: { x: side * eyelidPeak, y: yOffset },
-      c1: { x: side * eyeWidth, y: yOffset * 0.67 },
-      c2: { x: side * (eyelidPeak + eyeWidth * 0.2), y: yOffset },
+      a1: { x: this.outer.x, y: this.outer.y },
+      a2: { x: this.lower.x, y: this.lower.y },
+      c1: { x: this.outer.c2.x, y: this.outer.c2.y },
+      c2: { x: this.lower.c2.x, y: this.lower.c2.y },
     };
 
     this.q4 = {
@@ -139,10 +166,9 @@ class Eye {
       // ⠀⠀⠀⠈⠓⠦⠤│⠚⠁⠀ │ │ ⠀⠀⠙⠷│⣤⣶⠞⠉⠀⠀⠀
       //        └────┘ └─────┘
 
-      a1: { x: side * eyelidPeak, y: yOffset },
-      a2: { x: side * centerOffset, y: eyeBaseline },
-      c1: { x: side * (eyelidPeak - eyeWidth * 0.27), y: yOffset },
-      c2: { x: side * centerOffset, y: yOffset * 0.55 },
+      a2: { x: this.inner.x, y: this.inner.y },
+      c1: { x: this.lower.c1.x, y: this.lower.c1.y },
+      c2: { x: this.inner.c2.x, y: this.inner.c2.y },
     };
   }
 
@@ -178,6 +204,7 @@ function setup() {
   let rightEye = new Eye("right");
   leftEye.see();
   rightEye.see();
+  console.log(leftEye.upper.a1);
 }
 
 const now = new Date();
