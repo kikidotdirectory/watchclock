@@ -44,6 +44,22 @@ class Eye {
     const lowerEyelidMax = eyeHeightMax * 0.42;
     const lowerEyelidMin = eyeHeightMax * 0.23;
 
+    // vertical anchors (outer & inner)
+    const innerUpperMax = -eyeHeightMax * 0.51;
+    const innerUpperMin = -eyeHeightMax * 0.19;
+    const innerLowerMax = eyeHeightMax * 0.29;
+    const innerLowerMin = eyeHeightMax * 0.11;
+
+    const outerUpperMax = -eyeHeightMax * 0.28;
+    const outerUpperMin = -eyeHeightMax * 0.2;
+    const outerLowerMax = eyeHeightMax * 0.43;
+    const outerLowerMin = eyeHeightMax * 0.13;
+
+    // horizontal anchors (upper & lower eyelid)
+    const eyelidAnchorOffset = eyeWidth * 0.27;
+    const eyelidInnerAnchor = side * (abs(eyelidPeakX) - eyelidAnchorOffset);
+    const eyelidOuterAnchor = side * (abs(eyelidPeakX) + eyelidAnchorOffset);
+
     this.inner = {
       x: side * centerOffset,
       y: eyeBaseline,
