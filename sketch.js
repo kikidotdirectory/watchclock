@@ -31,7 +31,7 @@ class Eye {
     // horizontal positioning
     const innerCanthalDistance = width / 16;
     const centerOffset = side * (innerCanthalDistance / 2);
-		const eyelidPeakX = side * (eyeWidth * 0.48 + innerCanthalDistance / 2);
+    const eyelidPeakX = side * (eyeWidth * 0.48 + innerCanthalDistance / 2);
     const outerCornerX = side * eyeWidth;
 
     // vertical positioning
