@@ -204,12 +204,24 @@ function setup() {
   let rightEye = new Eye("right");
   leftEye.see();
   rightEye.see();
-  console.log(leftEye.upper.a1);
 }
 
+// helper functions
 function lerpByHour(min, max) {
   const now = new Date();
   const secondsSinceHourStart = now.getMinutes() * 60 + now.getSeconds();
   // return a lower number the closer it is to the end of the hour (closer to min)
   return map(3600 - secondsSinceHourStart, 0, 3600, min, max);
+}
+
+function makePoint(x, y, c1x, c1y, c2x, c2y) {
+  return { x, y, c1: { x: c1x, y: c1y }, c2: { x: c2x, y: c2y } };
+}
+
+function makeSegment(c1, c2, a2) {
+  return {
+    a2: { x: a2.x, y: a2.y },
+    c1: c1,
+    c2: c2,
+  };
 }
