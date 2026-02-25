@@ -61,12 +61,16 @@ class Eye {
     const eyelidInnerAnchor = side * (abs(eyelidPeakX) - eyelidAnchorOffset);
     const eyelidOuterAnchor = side * (abs(eyelidPeakX) + eyelidAnchorOffset);
 
+    const cx = eyelidPeakX;
+
     // eye center for translation in see()
     this.cx = eyelidPeakX;
     this.side = side;
+    this.strokeWeight = 7;
+    this.pupilSize = { w: eyeWidth * .9, h: eyeWidth * .6 }
+    this.color = 0;
 
     // define positions of points and their anchors, relative to eyelidPeakX
-    const cx = eyelidPeakX;
     this.inner = makePoint(
       centerOffset - cx,
       eyeBaseline,
@@ -117,7 +121,7 @@ class Eye {
       if (t < 1) {
         let x = -this.side * bezierPoint(q.a1.x, q.c1.x, q.c2.x, q.a2.x, t);
         let y = bezierPoint(q.a1.y, q.c1.y, q.c2.y, q.a2.y, t);
-        ellipse(x, y, 40, 40)
+        ellipse(x, y, this.pupilSize.w, this.pupilSize.h)
         return
       }
       t--
@@ -129,7 +133,7 @@ class Eye {
     noFill();
     translate(width / 2 + this.cx, height / 2);
     beginShape();
-    strokeWeight(3);
+    strokeWeight(this.strokeWeight);
     // BezierVertex needs to be called four times
     // for more: https://beta.p5js.org/reference/p5/beziervertex/ (v2)
 
@@ -151,9 +155,9 @@ class Eye {
   drawPupil() {
     push();
     translate(width / 2 + this.cx, height / 2);
-    scale(0.8);
-    noFill();
-    strokeWeight(3);
+    scale(0.5);
+    fill(this.color)
+    noStroke()
     const currentHour = lerpByHour();
     this.lookAtHour(currentHour)
     pop();
