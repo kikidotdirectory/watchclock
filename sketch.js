@@ -228,7 +228,26 @@ function setup() {
   rightEye = new Eye("right");
 }
 
+function drawHourMarks() {
+  const clockRadius = min(width, height) * 0.45;
+  push();
+  translate(width / 2, height / 2);
+  textAlign(CENTER, CENTER);
+  textSize(24);
+  fill(0, 30);
+  noStroke();
+  for (let h = 1; h <= 12; h++) {
+    const angle = map(h, 0, 12, -HALF_PI, HALF_PI * 3);
+    const x = cos(angle) * clockRadius;
+    const y = sin(angle) * clockRadius;
+    text(h, x, y);
+  }
+  pop();
+}
+
 function draw() {
+  background(255);
+  drawHourMarks();
   leftEye.see();
   rightEye.see();
 }
