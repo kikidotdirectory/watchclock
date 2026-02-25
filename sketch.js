@@ -199,15 +199,6 @@ class Eye {
   }
 }
 
-function setup() {
-  createCanvas(600, 600);
-  background(255);
-  let leftEye = new Eye("left");
-  let rightEye = new Eye("right");
-  leftEye.see();
-  rightEye.see();
-}
-
 // helper functions
 function lerpInHour(min, max) {
   const now = new Date();
@@ -234,4 +225,19 @@ function makeSegment(a1, c1, c2, a2) {
     c1: c1,
     c2: c2,
   };
+}
+
+// p5 setup
+let leftEye
+let rightEye
+function setup() {
+  createCanvas(600, 600);
+  background(255);
+  leftEye = new Eye("left");
+  rightEye = new Eye("right");
+}
+
+function draw() {
+  leftEye.see();
+  rightEye.see();
 }
