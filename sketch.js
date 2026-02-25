@@ -164,7 +164,7 @@ class Eye {
   drawPupil() {
     // hour hand angle: 12 o'clock is straight up (-PI/2)
     const hourAngle = map(lerpByHour(), 0, 4, -HALF_PI, HALF_PI * 3);
-    const clockRadius = min(width, height) * 0.4;
+    const clockRadius = min(width, height) * 0.45;
     const targetX = cos(hourAngle) * clockRadius;
     const targetY = sin(hourAngle) * clockRadius;
 
