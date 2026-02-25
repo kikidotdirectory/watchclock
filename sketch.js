@@ -63,6 +63,7 @@ class Eye {
 
     // eye center for translation in see()
     this.cx = eyelidPeakX;
+    this.side = side;
 
     // define positions of points and their anchors, relative to eyelidPeakX
     const cx = eyelidPeakX;
@@ -106,6 +107,23 @@ class Eye {
     this.q4 = makeSegment(this.lower, this.lower.c1, this.inner.c2, this.inner);
   }
 
+  /**
+   * Moves the pupil towards where the hour hand would be pointing on an analogue clock.
+   * @param {number} t - the current time in a 12-hour clock, represented as a number between 0-4 where 0 is 12:00
+   */
+  lookAtHour(t) {
+    const clockwiseQuadrants = [this.q1, this.q4, this.q3, this.q2]
+    for (let q of clockwiseQuadrants) {
+      if (t < 1) {
+        let x = -this.side * bezierPoint(q.a1.x, q.c1.x, q.c2.x, q.a2.x, t);
+        let y = bezierPoint(q.a1.y, q.c1.y, q.c2.y, q.a2.y, t);
+        ellipse(x, y, 40, 40)
+        return
+      }
+      t--
+    }
+  }
+
   see() {
     push();
     noFill();
@@ -134,14 +152,8 @@ class Eye {
     scale(0.8);
     noFill();
     strokeWeight(3);
-    for (let q of [this.q1, this.q2, this.q3, this.q4]) {
-      bezier(
-        q.a1.x, q.a1.y,
-        q.c1.x, q.c1.y,
-        q.c2.x, q.c2.y,
-        q.a2.x, q.a2.y,
-      );
-    }
+    const currentHour = lerpByHour();
+    this.lookAtHour(currentHour)
     pop();
   }
 }
