@@ -57,6 +57,9 @@ class Eye {
     // eye center for translation in see()
     this.cx = eyelidPeakX;
     this.side = side;
+    this.openingMax = { top: upperEyelidMax, bottom: lowerEyelidMax };
+    this.openingMin = { top: upperEyelidMin, bottom: lowerEyelidMin };
+    this.outerCornerX = outerCornerX;
     this.strokeWeight = 7;
     this.pupilScale = lerpInHour(.6, .4);
     this.pupilSize = { w: eyeWidth * .36 / this.pupilScale, h: eyeWidth * .24 / this.pupilScale }
@@ -177,6 +180,47 @@ class Eye {
     pop();
   }
 
+  drawOpeningBrackets() {
+    const bracketX = this.outerCornerX - this.cx;
+    const margin = 20;
+    const x = bracketX + this.side * margin;
+    const serrifW = 6;
+
+    push();
+    translate(width / 2 + this.cx, height / 2);
+    strokeWeight(1.5);
+    noFill();
+
+    const labelX = x + this.side * 4;
+    textSize(12);
+    textAlign(this.side === 1 ? LEFT : RIGHT, CENTER);
+    noStroke();
+
+    // max opening bracket (60m)
+    stroke(0, 60);
+    const maxTop = this.openingMax.top;
+    const maxBot = this.openingMax.bottom;
+    line(x, maxTop, x, maxBot);
+    line(x, maxTop, x - this.side * serrifW, maxTop);
+    line(x, maxBot, x - this.side * serrifW, maxBot);
+    fill(0, 60);
+    noStroke();
+    text(':00', labelX, maxTop);
+
+    // min opening bracket (0m)
+    stroke(0, 120);
+    const minTop = this.openingMin.top;
+    const minBot = this.openingMin.bottom;
+    line(x, minTop, x, minBot);
+    line(x, minTop, x - this.side * serrifW, minTop);
+    line(x, minBot, x - this.side * serrifW, minBot);
+    fill(0, 120);
+    noStroke();
+    text(':59', labelX, minTop);
+
+    pop();
+  }
+
   see() {
     push()
     // make sure that pupils don't clip outside of eyelids
@@ -250,4 +294,5 @@ function draw() {
   drawHourMarks();
   leftEye.see();
   rightEye.see();
+  leftEye.drawOpeningBrackets()
 }
