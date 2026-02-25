@@ -124,7 +124,7 @@ class Eye {
     }
   }
 
-  see() {
+  drawEyelids() {
     push();
     noFill();
     translate(width / 2 + this.cx, height / 2);
@@ -146,7 +146,9 @@ class Eye {
     }
     endShape();
     pop();
+  }
 
+  drawPupil() {
     push();
     translate(width / 2 + this.cx, height / 2);
     scale(0.8);
@@ -155,6 +157,18 @@ class Eye {
     const currentHour = lerpByHour();
     this.lookAtHour(currentHour)
     pop();
+  }
+
+  see() {
+    push()
+    // make sure that pupils don't clip outside of eyelids
+    beginClip()
+    this.drawEyelids()
+    endClip()
+
+    this.drawEyelids()
+    this.drawPupil()
+    pop()
   }
 }
 
