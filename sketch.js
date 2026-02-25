@@ -23,13 +23,13 @@ class Eye {
 
     // Generate dimensions of eye based off of canvas size.
     // eye size
-    const eyeWidth = width * 0.37;
+    const eyeWidth = width * 0.3;
     const eyeHeightMax = eyeWidth * 0.486;
     const eyeHeightMin = eyeWidth * 0.183;
     const yOffset = eyeHeightMax / 2;
 
     // horizontal positioning
-    const innerCanthalDistance = width / 16;
+    const innerCanthalDistance = width * .03;
     const centerOffset = side * (innerCanthalDistance / 2);
     const eyelidPeakX = side * (eyeWidth * 0.48 + innerCanthalDistance / 2);
     const outerCornerX = side * eyeWidth;
