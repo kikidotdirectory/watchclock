@@ -67,8 +67,8 @@ class Eye {
     this.cx = eyelidPeakX;
     this.side = side;
     this.strokeWeight = 7;
-    this.pupilScale = .6;
-    this.pupilSize = { w: eyeWidth * .75, h: eyeWidth * .5 }
+    this.pupilScale = lerpInHour(.6, .4);
+    this.pupilSize = { w: eyeWidth * .36 / this.pupilScale, h: eyeWidth * .24 / this.pupilScale }
     this.color = 0;
 
     // define positions of points and their anchors, relative to eyelidPeakX
