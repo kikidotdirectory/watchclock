@@ -128,9 +128,9 @@ class Eye {
         const px = bezierPoint(q.a1.x, q.c1.x, q.c2.x, q.a2.x, t);
         const py = bezierPoint(q.a1.y, q.c1.y, q.c2.y, q.a2.y, t);
         // dot product of the pupil-track point direction vs target direction
-        const dot = px * dx + py * dy;
-        if (dot > bestDot) {
-          bestDot = dot;
+        const eyeDot = px * dx + py * dy;
+        if (eyeDot > bestDot) {
+          bestDot = eyeDot;
           bestX = px;
           bestY = py;
         }
